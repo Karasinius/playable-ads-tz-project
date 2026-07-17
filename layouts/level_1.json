@@ -7,7 +7,7 @@
     ],
     "__childs": {
       "sky": {
-        "__color": "#7ea2ff",
+        "__img": "sky_img",
         "__size": [
           1,
           1,
@@ -29,7 +29,7 @@
           -15
         ],
         "__childs": {
-          "_0": {
+          "launcherPivot": {
             "__color": "#fb22a0",
             "__rotate": 3.9,
             "__size": [
@@ -68,12 +68,22 @@
             },
             "__img": "block_1",
             "__ofs": [
-              296,
-              -16
+              306,
+              -9
             ]
           },
-          "ground": {
-            "__color": "#296b22",
+          "groundVisual": {
+            "__img": "ground_image",
+            "__size": [
+              1275,
+              211
+            ],
+            "__ofs": [
+              -12,
+              288
+            ]
+          },
+          "groundCollider": {
             "__physics": {
               "__isStatic": true,
               "__friction": 10,
@@ -85,24 +95,11 @@
             },
             "__size": [
               1234,
-              211
+              60
             ],
-            "__y": 395
-          },
-          "_2": {
-            "__physics": {
-              "__isStatic": false,
-              "__friction": 10,
-              "__frictionAir": 1,
-              "__frictionStatic": 50,
-              "__restitution": 0,
-              "__density": 1,
-              "__bodyType": 0
-            },
-            "__img": "block_2",
             "__ofs": [
-              299,
-              86
+              -6,
+              333
             ]
           },
           "_3": {
@@ -115,10 +112,10 @@
               "__density": 1,
               "__bodyType": 0
             },
-            "__img": "block_3",
+            "__img": "block_2",
             "__ofs": [
-              192,
-              207
+              296,
+              94
             ]
           },
           "_4": {
@@ -133,11 +130,27 @@
             },
             "__img": "block_3",
             "__ofs": [
-              408,
-              207
+              193,
+              211
             ]
           },
           "_5": {
+            "__physics": {
+              "__isStatic": false,
+              "__friction": 10,
+              "__frictionAir": 1,
+              "__frictionStatic": 50,
+              "__restitution": 0,
+              "__density": 1,
+              "__bodyType": 0
+            },
+            "__img": "block_3",
+            "__ofs": [
+              399,
+              202
+            ]
+          },
+          "_6": {
             "__physics": {
               "__isStatic": false,
               "__friction": 10,
@@ -153,12 +166,11 @@
               126
             ],
             "__ofs": [
-              299,
-              223
+              293,
+              226
             ]
           },
           "wall": {
-            "__color": "#296b22",
             "__physics": {
               "__isStatic": true,
               "__friction": 10,
@@ -168,6 +180,7 @@
               "__density": 1,
               "__bodyType": 0
             },
+            "__img": "wall_img",
             "__size": [
               65,
               689
