@@ -29,6 +29,13 @@
         ],
         "src/": [
             "loading.js",
+            "gameState.js",
+            "gameUtils.js",
+            "collisionSystem.js",
+            "destructibles.js",
+            "projectiles.js",
+            "levelBindings.js",
+            "levelManager.js",
             "main.js"
         ],
         "../../eeditor/plugins/": [
