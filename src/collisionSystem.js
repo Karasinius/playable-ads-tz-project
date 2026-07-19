@@ -37,7 +37,7 @@ Game.initPhysicsCollisionEvents = function () {
     }
 
     // Физический движок создается после загрузки и обновления уровня
-    if (typeof ph_Engine === 'undefined' || !ph_Engine) {
+    if (!ph_Engine) {
         Game.log('[Game] ph_Engine is not ready');
         return;
     }

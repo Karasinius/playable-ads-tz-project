@@ -55,35 +55,58 @@
             "__alpha": 0,
             "sha": 0,
             "sva": 2,
-            "__needScissor": false,
             "__size": [
               140,
               100
             ],
             "__ofs": [
-              -24,
-              3
+              -25,
+              21
             ],
             "__childs": {
-              "launcherPivot": {
-                "__color": "#d32525",
-                "__alpha": 0,
-                "__rotate": 9,
+              "leftRubberVisual": {
+                "__color": "#3b2513",
+                "__rotate": -38,
                 "__size": [
-                  25,
-                  25
+                  57,
+                  12
                 ],
-                "__childs": {
-                  "rubber": {
-                    "__color": "#362207",
-                    "sha": 2,
-                    "sva": 1,
-                    "__size": [
-                      148,
-                      18
-                    ]
-                  }
-                }
+                "__ofs": [
+                  -23,
+                  -18,
+                  -31
+                ]
+              },
+              "rightRubberVisual": {
+                "__color": "#3b2513",
+                "__rotate": -155,
+                "__size": [
+                  72,
+                  12
+                ],
+                "__ofs": [
+                  33,
+                  -15,
+                  -29
+                ]
+              },
+              "projectilePreview": {
+                "__alpha": 0,
+                "__img": "circle1",
+                "__size": [
+                  36,
+                  36
+                ],
+                "__z": -50
+              },
+              "rubberPouchVisual": {
+                "__color": "#3b2513",
+                "__img": "circle1",
+                "__size": [
+                  44,
+                  44
+                ],
+                "__z": -40
               }
             }
           }
@@ -140,6 +163,7 @@
               100,
               100
             ],
+            "__y": 21,
             "__childs": {
               "rectangleBlock3": {
                 "__physics": {

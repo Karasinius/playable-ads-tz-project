@@ -5,9 +5,23 @@
  */
 Game.createLevelAliases = function () {
     return {
-        // Сохраняем ссылку на Node резинки
-        rubber(node) {
-            Game.state.rubber = node;
+        // Сохраняем ссылки на две резинки
+        leftRubberVisual(node) {
+            Game.state.leftRubberVisual = node;
+        },
+
+        rightRubberVisual(node) {
+            Game.state.rightRubberVisual = node;
+        },
+
+        // Сохраняем ссылку на стык резинок
+        rubberPouchVisual(node) {
+            Game.state.rubberPouchVisual = node;
+        },
+
+        // Сохраняем ссылку на изображение снежка при натягивании
+        projectilePreview(node) {
+            Game.state.projectilePreview = node;
         },
 
         // Сохраняем ссылку на контейнер основных целей
@@ -19,47 +33,80 @@ Game.createLevelAliases = function () {
         userInputArea: {
             __dragDist: 1,
 
-            // Натягивание резинки во время drag
+            // Запуск музыки при обычном клике без броска
+            __onTap() {
+                Game.startBackgroundMusic();
+            },
+
+            // Натягивание резинок во время drag
             __drag(x, y, dx, dy) {
-                if (Game.state.levelCompleted || !Game.state.rubber) {
+                if (
+                    Game.state.levelCompleted ||
+                    !Game.state.leftRubberVisual ||
+                    !Game.state.rightRubberVisual
+                ) {
                     return;
                 }
 
-                var dragVector = this.__worldPosition.__clone().sub(new Vector2(x, y)) // Вектор от курсора к центру рогатки
-                    , stretch = dragVector.__length()
-                    , maxStretch = Game.config.maxRubberStretch;
+                var restPoint = Game.config.rubberRestPoint
+                    , restWorldPosition = new Vector2(
+                        this.__worldPosition.x + restPoint.x,
+                        this.__worldPosition.y + restPoint.y
+                    ) // Мировая позиция исходной точки соединения резинок
+                    , pullVector = restWorldPosition.sub(new Vector2(x, y)) // Вектор от указателя к точке покоя
+                    , stretch = pullVector.__length()
+                    , maxStretch = Game.config.maxRubberStretch
+                    , pouchOffset;
 
-                // Масштабируем весь вектор, чтобы сохранить направление и ограничить его длину
+                // Ограничиваем максимальное расстояние натяжения
                 if (stretch > maxStretch) {
-                    dragVector.__multiplyScalar(maxStretch / stretch);
+                    pullVector.__multiplyScalar(maxStretch / stretch);
                     stretch = maxStretch;
                 }
 
-                this.__dmouse = dragVector; // Сохраняем ограниченный вектор для последующего запуска снежка
-                Game.state.rubber.__parent.__rotate = -dragVector.__angle() * RAD2DEG; // Поворачиваем launcherPivot
-                Game.state.rubber.__width = stretch; // Изменяем длину резинки
+                // Положение натянутого стыка относительно центра userInputArea
+                pouchOffset = new Vector2(
+                    restPoint.x - pullVector.x,
+                    restPoint.y - pullVector.y
+                );
+
+                this.__pouchOffset = pouchOffset; // Сохраняем место создания физического снежка
+                this.__launchVector = Game.getAverageRubberLaunchVector(pouchOffset); // Вычисляем направление из двух видимых резинок
+
+                // Растягиваем две резинки к ограниченному положению указателя
+                Game.updateLauncherVisuals(
+                    pouchOffset.x,
+                    pouchOffset.y,
+                    true
+                );
             },
 
-            // Остановка анимации возврата резинки в начале нового drag
+            // Остановка анимации возврата резинок в начале нового drag
             __dragStart() {
-                if (!Game.state.levelCompleted && Game.state.rubber) {
-                    Game.state.rubber.__killAllAnimations();
-                }
+                Game.startBackgroundMusic(); // Запускаем музыку после первого пользовательского действия
+                Game.stopLauncherVisualAnimations();
+
+                // Старые данные броска не должны использоваться в новом drag
+                this.__pouchOffset = 0;
+                this.__launchVector = 0;
             },
 
             // Запуск снежка после отпускания указателя
             __dragEnd() {
-                if (Game.state.levelCompleted || !Game.state.rubber) {
+                if (Game.state.levelCompleted) {
                     return;
                 }
 
-                // Возвращаем резинку к исходной длине
-                Game.state.rubber.__anim({
-                    __width: 10
-                }, 0.4, 0, easeElasticO);
+                // Обычный клик не должен вызывать dragEnd
+                if (!this.__launchVector) {
+                    Game.animateLauncherReturn();
+                    return;
+                }
 
                 playSound('punch');
+
                 Game.launchProjectile(this);
+                Game.animateLauncherReturn(); // Плавно возвращаем резинки по кратчайшему угловому пути
             }
         }
     };

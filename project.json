@@ -31,9 +31,11 @@
             "loading.js",
             "gameState.js",
             "gameUtils.js",
+            "audioManager.js",
             "collisionSystem.js",
             "destructibles.js",
             "projectiles.js",
+            "launcherVisuals.js",
             "levelBindings.js",
             "levelManager.js",
             "main.js"

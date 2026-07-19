@@ -47,9 +47,10 @@ Game.trackProjectile = function (projectile) {
  * Создание и запуск снежка.
  */
 Game.launchProjectile = function (inputArea) {
-    var launchVector = inputArea.__dmouse;
+    var launchVector = inputArea.__launchVector
+        , pouchOffset = inputArea.__pouchOffset || new Vector2(0, 0);
 
-    // Защита от вызова функции без сохраненного вектора натяжения
+    // Защита от вызова функции без рассчитанного направления запуска
     if (!launchVector) {
         return;
     }
@@ -62,7 +63,11 @@ Game.launchProjectile = function (inputArea) {
             __effect: 'tail', // Эффект хвоста
             __img: 'circle1', // Изображение снежка
             __size: [28, 28],
-            __ofs: [spawnPosition.x, spawnPosition.y, -20], // Позиция userInputArea на переднем слое
+            __ofs: [
+                spawnPosition.x + pouchOffset.x,
+                spawnPosition.y + pouchOffset.y,
+                -20
+            ], // Создаем снаряд в натянутой точке между двумя резинками
             __physics: {
                 __isStatic: false,
                 __friction: 130,
@@ -73,12 +78,15 @@ Game.launchProjectile = function (inputArea) {
                 __bodyType: 1
             }
         }).update()
-        , velocity = launchVector.__clone().__multiplyScalar(Game.config.projectileSpeedMultiplier); // Преобразуем натяжение в скорость
+        , velocity = launchVector.__clone().__multiplyScalar(Game.config.projectileSpeedMultiplier); // Преобразуем среднее направление и натяжение в скорость
 
     if (projectile.__ph_body) {
         ph_Body.setVelocity(projectile.__ph_body, velocity);
     }
 
     Game.trackProjectile(projectile); // Запоминаем снежок и запускаем таймер удаления
-    inputArea.__dmouse = 0; // Старый вектор не должен использоваться при следующем броске
+
+    // Старые данные не должны использоваться при следующем броске
+    inputArea.__launchVector = 0;
+    inputArea.__pouchOffset = 0;
 };

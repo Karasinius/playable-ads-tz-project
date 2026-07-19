@@ -8,7 +8,7 @@ Game.addBreakBlock = function (x, y, velocity, baseRotation) {
         , breakBlock = Game.state.level.__addChildBox({
             __img: 'break_' + randomInt(1, 9), // Случайная текстура осколка
             __ofs: [x, y, -20], // Позиция осколка на переднем слое
-            __rotate: (baseRotation || 0) + randomInt(-30, 30), // Поворот блока и случайный разброс примерно от -30 до 30 градусов
+            __rotate: (baseRotation || 0) + randomInt(-30, 30), // Поворот блока и случайный разброс от -30 до 30 градусов
             __physics: {
                 __isStatic: false,
                 __friction: 10,
@@ -71,7 +71,7 @@ Game.createBreakBlocks = function (block, size, velocity) {
             cellHeight = mmin(step, size.y - y);
             localY = -size.y / 2 + y + cellHeight / 2; // В layout положительный Y направлен вниз
 
-            // Поворачиваем локальную точку в системе координат с осью Y вниз
+            // Поворачиваем локальную точку (в системе координат с осью Y вниз)
             rotatedX = localX * cosAngle + localY * sinAngle;
             rotatedY = -localX * sinAngle + localY * cosAngle;
 
