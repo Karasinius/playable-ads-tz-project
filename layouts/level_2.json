@@ -1,6 +1,6 @@
 [
   {
-    "name": "level1",
+    "name": "level2",
     "__size": [
       1234,
       768
@@ -137,6 +137,28 @@
               100
             ],
             "__childs": {
+              "circleBlock1": {
+                "__physics": {
+                  "__isStatic": false,
+                  "__friction": 10,
+                  "__frictionAir": 1,
+                  "__frictionStatic": 50,
+                  "__restitution": 0,
+                  "__density": 1,
+                  "__bodyType": 1
+                },
+                "__alpha": 1.2,
+                "__img": "block_4",
+                "__size": [
+                  126,
+                  126
+                ],
+                "__ofs": [
+                  291,
+                  -246,
+                  -2
+                ]
+              },
               "squareBlock1": {
                 "__color": "#c2c6ff",
                 "__physics": {
@@ -148,41 +170,15 @@
                   "__density": 1,
                   "__bodyType": 0
                 },
-                "__alpha": 0.6,
+                "__alpha": 0.8,
                 "__img": "block_1",
-                "__size": [
-                  199,
-                  199
-                ],
                 "__ofs": [
-                  299,
-                  -24,
-                  -2
-                ]
-              },
-              "circleBlock1": {
-                "__physics": {
-                  "__isStatic": false,
-                  "__friction": 10,
-                  "__frictionAir": 1,
-                  "__frictionStatic": 50,
-                  "__restitution": 0,
-                  "__density": 1,
-                  "__bodyType": 1
-                },
-                "__img": "block_4",
-                "__size": [
-                  126,
-                  126
-                ],
-                "__ofs": [
-                  303,
-                  247,
+                  2,
+                  242,
                   -2
                 ]
               },
               "rectangleBlock1": {
-                "__color": "#c2c6ff",
                 "__physics": {
                   "__isStatic": false,
                   "__friction": 10,
@@ -192,11 +188,15 @@
                   "__density": 1,
                   "__bodyType": 0
                 },
-                "__alpha": 0.6,
+                "__alpha": 0.8,
                 "__img": "block_2",
+                "__size": [
+                  125,
+                  53
+                ],
                 "__ofs": [
-                  299,
-                  118,
+                  411,
+                  125,
                   -2
                 ]
               },
@@ -210,10 +210,15 @@
                   "__density": 1,
                   "__bodyType": 0
                 },
+                "__alpha": 1.2,
                 "__img": "block_3",
+                "__size": [
+                  52,
+                  122
+                ],
                 "__ofs": [
-                  193,
-                  233,
+                  192,
+                  -242,
                   -2
                 ]
               },
@@ -227,10 +232,11 @@
                   "__density": 1,
                   "__bodyType": 0
                 },
+                "__alpha": 0.8,
                 "__img": "block_3",
                 "__ofs": [
-                  409,
-                  234,
+                  413,
+                  225,
                   -2
                 ]
               },
@@ -244,38 +250,15 @@
                   "__density": 1,
                   "__bodyType": 0
                 },
-                "__rotate": -30,
+                "__alpha": 1.2,
                 "__img": "block_3",
                 "__size": [
-                  74,
-                  158
+                  75,
+                  126
                 ],
                 "__ofs": [
-                  88,
-                  227,
-                  -2
-                ]
-              },
-              "rectangleBlock5": {
-                "__physics": {
-                  "__isStatic": false,
-                  "__friction": 10,
-                  "__frictionAir": 1,
-                  "__frictionStatic": 50,
-                  "__restitution": 0,
-                  "__density": 1,
-                  "__bodyType": 0
-                },
-                "__alpha": 1.13,
-                "__rotate": 90,
-                "__img": "block_3",
-                "__size": [
-                  136,
-                  289
-                ],
-                "__ofs": [
-                  297,
-                  -187,
+                  -76,
+                  -80,
                   -2
                 ]
               }
@@ -308,8 +291,39 @@
               70
             ],
             "__ofs": [
-              9,
-              347
+              14,
+              339
+            ]
+          },
+          "groundVisual2": {
+            "__img": "ground_img",
+            "__size": [
+              154,
+              99
+            ],
+            "__ofs": [
+              219,
+              -186,
+              -1
+            ]
+          },
+          "groundCollider2": {
+            "__physics": {
+              "__isStatic": true,
+              "__friction": 10,
+              "__frictionAir": 1,
+              "__frictionStatic": 50,
+              "__restitution": 0,
+              "__density": 1,
+              "__bodyType": 0
+            },
+            "__size": [
+              147,
+              42
+            ],
+            "__ofs": [
+              225,
+              -166
             ]
           },
           "wall1": {
@@ -330,6 +344,27 @@
             "__ofs": [
               550,
               -12,
+              1
+            ]
+          },
+          "wall2": {
+            "__physics": {
+              "__isStatic": true,
+              "__friction": 10,
+              "__frictionAir": 1,
+              "__frictionStatic": 50,
+              "__restitution": 0,
+              "__density": 1,
+              "__bodyType": 0
+            },
+            "__img": "wall_img",
+            "__size": [
+              85,
+              335
+            ],
+            "__ofs": [
+              -116,
+              145,
               1
             ]
           }

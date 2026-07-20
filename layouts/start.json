@@ -1,0 +1,67 @@
+[
+  {
+    "name": "start",
+    "__color": "#071b2c",
+    "__alpha": 0.82,
+    "__size": [
+      2,
+      2,
+      1,
+      1
+    ],
+    "__keyframes": {
+      "loop": 0,
+      "__loopDisabled": 1,
+      "__track": {
+        "__alphaDeep": {
+          "0": 0,
+          "25": 1
+        }
+      }
+    },
+    "__childs": {
+      "startText": {
+        "__size": [
+          760,
+          100
+        ],
+        "__text": {
+          "__fontsize": 44,
+          "__autoscale": 1,
+          "__color": "#ffffff",
+          "__text": "play"
+        },
+        "__keyframes": {
+          "loop": 1,
+          "__loopDisabled": 0,
+          "__easing": 1,
+          "__track": {
+            "__transform": {
+              "0": [
+                0,
+                0,
+                0.96,
+                0.96,
+                0
+              ],
+              "100": [
+                0,
+                0,
+                1.04,
+                1.04,
+                0
+              ],
+              "200": [
+                0,
+                0,
+                0.96,
+                0.96,
+                0
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+]

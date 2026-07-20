@@ -1,6 +1,13 @@
 [
     "play",
-    "PLAY",
+    "CLICK TO START",
+
     "try_again",
-    "TRY AGAIN"
+    "TRY AGAIN",
+
+    "next_level",
+    "NEXT LEVEL",
+
+    "shots_used",
+    "SNOWBALLS USED:"
 ]

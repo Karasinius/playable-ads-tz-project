@@ -1,10 +1,27 @@
 // Общая обработка физических столкновений и урона.
 
+
 /**
- * Расчет относительной скорости двух физических тел.
+ * Получение скорости через getVelocity.
+ * 
+ * Если просто velocity брать, то это нестабильно работает на разных устройствах
+ * 
+ * При работе на телефоне и на ноутбуке в старой версии физика по-разному работала
+ * 
+ * Но как только стал скорость так брать, то все нормально стало
+ */
+Game.getBodyVelocity = function (body) {
+    var velocity = ph_Body.getVelocity(body);
+
+    return new Vector2(velocity.x, velocity.y);
+};
+
+/**
+ * Расчет относительной скорости двух физических тел через getVelocity.
  */
 Game.relImpactSpeed = function (bodyA, bodyB) {
-    var velocityA = bodyA.velocity, velocityB = bodyB.velocity
+    var velocityA = Game.getBodyVelocity(bodyA)
+        , velocityB = Game.getBodyVelocity(bodyB)
         , relativeVelocity = new Vector2(velocityA.x - velocityB.x, velocityA.y - velocityB.y);
 
     return relativeVelocity.__length(); // Длина вектора относительной скорости
@@ -38,14 +55,14 @@ Game.initPhysicsCollisionEvents = function () {
 
     // Физический движок создается после загрузки и обновления уровня
     if (!ph_Engine) {
-        Game.log('[Game] ph_Engine is not ready');
+        //Game.log('[Game] ph_Engine is not ready');
         return;
     }
 
     Game.state.collisionEventsInitialized = true;
     ph_Events.on(ph_Engine, 'collisionStart', Game.onPhysicsCollisionStart);
 
-    Game.log('[Game] Physics collision events initialized');
+    //Game.log('[Game] Physics collision events initialized');
 };
 
 /**

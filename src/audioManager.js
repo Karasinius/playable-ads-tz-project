@@ -9,7 +9,6 @@ Game.startBackgroundMusic = function () {
     }
 
     if (!getSound(Game.config.backgroundMusic)) {
-        Game.log('[Game] Background music was not found:', Game.config.backgroundMusic);
         return;
     }
 
@@ -17,7 +16,7 @@ Game.startBackgroundMusic = function () {
     changeSoundVolume(Game.config.backgroundMusic, Game.config.backgroundMusicVolume); // Уменьшаем громкость только фоновой музыки
     Game.state.backgroundMusicStarted = true;
 
-    Game.log('[Game] Background music started');
+    //Game.log('[Game] Background music started');
 };
 
 /**

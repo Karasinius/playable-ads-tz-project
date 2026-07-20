@@ -29,22 +29,31 @@ Game.createLevelAliases = function () {
             Game.state.destructiblesRoot = node;
         },
 
+        // Кнопка перезапуска текущего уровня
+        reloadButton: {
+            __onTap() {
+                if (!Game.state.gameStarted ||
+                    Game.state.levelCompleted ||
+                    Game.state.levelTransitionInProgress ||
+                    windowManager.__hasOpenedWindow()
+                ) {
+                    return;
+                }
+
+                Game.restartCurrentLevel();
+            },
+
+            // Визуальное выделение кнопки при нажатии
+            __onTapHighlight: 1
+        },
+
         // Логика зоны взаимодействия с рогаткой
         userInputArea: {
             __dragDist: 1,
 
-            // Запуск музыки при обычном клике без броска
-            __onTap() {
-                Game.startBackgroundMusic();
-            },
-
             // Натягивание резинок во время drag
             __drag(x, y, dx, dy) {
-                if (
-                    Game.state.levelCompleted ||
-                    !Game.state.leftRubberVisual ||
-                    !Game.state.rightRubberVisual
-                ) {
+                if (!Game.state.gameStarted || Game.state.levelCompleted) {
                     return;
                 }
 
@@ -65,25 +74,21 @@ Game.createLevelAliases = function () {
                 }
 
                 // Положение натянутого стыка относительно центра userInputArea
-                pouchOffset = new Vector2(
-                    restPoint.x - pullVector.x,
-                    restPoint.y - pullVector.y
-                );
+                pouchOffset = new Vector2(restPoint.x - pullVector.x, restPoint.y - pullVector.y);
 
                 this.__pouchOffset = pouchOffset; // Сохраняем место создания физического снежка
-                this.__launchVector = Game.getAverageRubberLaunchVector(pouchOffset); // Вычисляем направление из двух видимых резинок
+                this.__launchVector = Game.getAverageRubberLaunchVector(pouchOffset); // Вычисляем направление из двух резинок
 
                 // Растягиваем две резинки к ограниченному положению указателя
-                Game.updateLauncherVisuals(
-                    pouchOffset.x,
-                    pouchOffset.y,
-                    true
-                );
+                Game.updateLauncherVisuals(pouchOffset.x, pouchOffset.y, true);
             },
 
             // Остановка анимации возврата резинок в начале нового drag
             __dragStart() {
-                Game.startBackgroundMusic(); // Запускаем музыку после первого пользовательского действия
+                if (!Game.state.gameStarted || Game.state.levelCompleted) {
+                    return;
+                }
+
                 Game.stopLauncherVisualAnimations();
 
                 // Старые данные броска не должны использоваться в новом drag
@@ -93,7 +98,7 @@ Game.createLevelAliases = function () {
 
             // Запуск снежка после отпускания указателя
             __dragEnd() {
-                if (Game.state.levelCompleted) {
+                if (!Game.state.gameStarted || Game.state.levelCompleted) {
                     return;
                 }
 

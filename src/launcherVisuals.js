@@ -1,4 +1,4 @@
-// Геометрия, направление запуска и анимации рогатки.
+// Геометрия, направление запуска и анимации резинок рогатки.
 
 /**
  * Расчет положения, длины и поворота одной резинки.
@@ -25,6 +25,8 @@ Game.getRubberVisualData = function (anchorPoint, pouchPoint) {
  * то обычная разница будет -315°.
  *
  * Эквивалент -145° это 215°, и тогда разница составляет 45°.
+ * 
+ * Это используется при возврате резинок в исходное положение, чтобы в правильную сторону прокрутились
  */
 Game.getNearestRotation = function (currentRotation, targetRotation) {
     var rotation = targetRotation;
@@ -90,24 +92,15 @@ Game.getAverageRubberLaunchVector = function (pouchPoint) {
         , rightAnchor = Game.config.rightRubberAnchor
         , restPoint = Game.config.rubberRestPoint
 
-        // Направления от натянутого стыка к левому и правому рожку
-        , leftDirection = new Vector2(
-            leftAnchor.x - pouchPoint.x,
-            leftAnchor.y - pouchPoint.y
-        )
-        , rightDirection = new Vector2(
-            rightAnchor.x - pouchPoint.x,
-            rightAnchor.y - pouchPoint.y
-        )
+        // Направления от натянутого стыка к левому и правому рожку рогатки
+        , leftDirection = new Vector2(leftAnchor.x - pouchPoint.x, leftAnchor.y - pouchPoint.y)
+        , rightDirection = new Vector2(rightAnchor.x - pouchPoint.x, rightAnchor.y - pouchPoint.y)
 
         , leftLength = leftDirection.__length()
         , rightLength = rightDirection.__length()
 
         // Расстояние от натянутого положения до исходной точки стыка
-        , pullVector = new Vector2(
-            restPoint.x - pouchPoint.x,
-            restPoint.y - pouchPoint.y
-        )
+        , pullVector = new Vector2(restPoint.x - pouchPoint.x, restPoint.y - pouchPoint.y)
         , pullDistance = pullVector.__length()
 
         , averageDirection
@@ -123,10 +116,7 @@ Game.getAverageRubberLaunchVector = function (pouchPoint) {
     }
 
     // Складываем два единичных направления
-    averageDirection = new Vector2(
-        leftDirection.x + rightDirection.x,
-        leftDirection.y + rightDirection.y
-    );
+    averageDirection = new Vector2(leftDirection.x + rightDirection.x, leftDirection.y + rightDirection.y);
 
     averageLength = averageDirection.__length();
 
@@ -165,17 +155,9 @@ Game.stopLauncherVisualAnimations = function () {
 Game.updateLauncherVisuals = function (pouchX, pouchY, showProjectile) {
     var pouchPoint = new Vector2(pouchX, pouchY);
 
-    Game.updateRubberVisual(
-        Game.state.leftRubberVisual,
-        Game.config.leftRubberAnchor,
-        pouchPoint
-    );
+    Game.updateRubberVisual(Game.state.leftRubberVisual, Game.config.leftRubberAnchor, pouchPoint);
 
-    Game.updateRubberVisual(
-        Game.state.rightRubberVisual,
-        Game.config.rightRubberAnchor,
-        pouchPoint
-    );
+    Game.updateRubberVisual(Game.state.rightRubberVisual, Game.config.rightRubberAnchor, pouchPoint);
 
     // Коричневый круг всегда находится в точке соединения двух резинок
     if (Game.state.rubberPouchVisual) {
@@ -199,11 +181,7 @@ Game.resetLauncherVisuals = function () {
 
     Game.stopLauncherVisualAnimations();
 
-    Game.updateLauncherVisuals(
-        restPoint.x,
-        restPoint.y,
-        false
-    );
+    Game.updateLauncherVisuals(restPoint.x, restPoint.y, false);
 };
 
 /**
@@ -212,17 +190,9 @@ Game.resetLauncherVisuals = function () {
 Game.animateLauncherReturn = function () {
     var restPoint = Game.config.rubberRestPoint;
 
-    Game.animateRubberVisual(
-        Game.state.leftRubberVisual,
-        Game.config.leftRubberAnchor,
-        restPoint
-    );
+    Game.animateRubberVisual(Game.state.leftRubberVisual, Game.config.leftRubberAnchor, restPoint);
 
-    Game.animateRubberVisual(
-        Game.state.rightRubberVisual,
-        Game.config.rightRubberAnchor,
-        restPoint
-    );
+    Game.animateRubberVisual(Game.state.rightRubberVisual, Game.config.rightRubberAnchor, restPoint);
 
     // Стык плавно возвращается вместе с резинками
     if (Game.state.rubberPouchVisual) {

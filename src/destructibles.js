@@ -37,7 +37,7 @@ Game.addBreakBlock = function (x, y, velocity, baseRotation) {
                 return;
             }
 
-            Game.initCollision(breakBlock.__ph_body, breakBlock, 50); // Осколок получает HP
+            Game.initCollision(breakBlock.__ph_body, breakBlock, Game.config.breakBlockHp); // Осколок получает HP из конфига
 
             // Автоматическое удаление осколка через 5-10 секунд
             _setTimeout(() => {
@@ -53,9 +53,8 @@ Game.addBreakBlock = function (x, y, velocity, baseRotation) {
  * Создание сетки осколков с учетом поворота исходного блока.
  */
 Game.createBreakBlocks = function (block, size, velocity) {
-    var step = Game.config.fragmentStep
-        , center = block.__worldPosition.__clone()
-        , rotation = Game.getWorldRotationDegrees(block)
+    var step = Game.config.fragmentStep, center = block.__worldPosition.__clone()
+        , rotation = Game.getWorldRotationDegrees(block) 
         , angle = rotation * Math.PI / 180 // Перевод в радианы
         , cosAngle = Math.cos(angle)
         , sinAngle = Math.sin(angle)
@@ -71,27 +70,26 @@ Game.createBreakBlocks = function (block, size, velocity) {
             cellHeight = mmin(step, size.y - y);
             localY = -size.y / 2 + y + cellHeight / 2; // В layout положительный Y направлен вниз
 
-            // Поворачиваем локальную точку (в системе координат с осью Y вниз)
+            // Поворачиваем локальную точку (с учетом системы координат с осью Y направленной вниз)
             rotatedX = localX * cosAngle + localY * sinAngle;
             rotatedY = -localX * sinAngle + localY * cosAngle;
 
-            Game.addBreakBlock(
-                center.x + rotatedX,
-                center.y + rotatedY,
-                velocity,
-                rotation
-            );
+            Game.addBreakBlock(center.x + rotatedX, center.y + rotatedY, velocity, rotation);
         }
     }
 };
 
 /**
- * Пробуждение всех оставшихся физических объектов из blocks.
+ * Пробуждение оставшихся разрушаемых объектов и активных снарядов.
  */
 Game.awakeBlocks = function () {
     $each(Game.state.blocks, block => {
-        if (block && !block.__destructed && block.__ph_body) {
-            block.__ph_awake();
+        block.__ph_awake();
+    });
+
+    $each(Game.state.activeProjectiles, projectile => {
+        if (projectile.__ph_body) {
+            projectile.__ph_awake();
         }
     });
 };
@@ -105,22 +103,16 @@ Game.removeBlock = function (block) {
     }
 
     var body = block.__ph_body
-        , size = block.__size
-        , velocity = body && body.velocity
-            ? new Vector2(body.velocity.x, body.velocity.y)
-            : new Vector2(0, 0)
-        , needsBreaks = !!block.__needBreaks; // Основные цели создают осколки и уменьшают счетчик победы
+        , velocity = Game.getBodyVelocity(body)
+        , needsBreaks = block.__needBreaks;
 
     removeFromArray(block, Game.state.blocks); // Удаляем объект из коллекции отслеживаемых блоков
 
-    if (body) {
-        body.__onCollision = 0; // Отключаем дальнейшую обработку столкновений
-    }
+    body.__onCollision = 0; // Отключаем дальнейшую обработку столкновений
 
-    // Осколки создаются до удаления Node, пока доступен worldPosition
     if (needsBreaks) {
-        Game.createBreakBlocks(block, size, velocity);
-    }
+        Game.createBreakBlocks(block, block.__size, velocity); // Создание осколков
+    }   
 
     block.__removeFromParent(); // Удаляем Node и его физическое тело
     Game.looperPostOne(Game.awakeBlocks); // Пробуждаем объекты после удаления опоры
@@ -141,30 +133,65 @@ Game.removeBlock = function (block) {
 };
 
 /**
- * Добавление HP прямым детям контейнера destructibles.
+ * Получение имени Node для поиска его параметров в конфигурации уровня.
+ */
+Game.getDestructibleName = function (node) {
+    return node && (node.__name || node.name);
+};
+
+/**
+ * Получение индивидуального HP объекта из конфигурации текущего уровня.
+ */
+Game.getDestructibleHp = function (node) {
+    var levelConfig = Game.getCurrentLevelConfig()
+        , hpConfig = levelConfig && levelConfig.destructibleHp
+        , nodeName = Game.getDestructibleName(node)
+        , hp = nodeName && hpConfig
+            ? hpConfig[nodeName]
+            : 0;
+
+    // Если имя объекта отсутствует в конфигурации, используем стандартное HP
+    if (hp <= 0) {
+        hp = Game.config.defaultDestructibleHp;
+    }
+
+    return hp;
+};
+
+/**
+ * Добавление индивидуального HP прямым детям контейнера destructibles.
  */
 Game.initDestructibles = function () {
-    var root = Game.state.destructiblesRoot;
+    var root = Game.state.destructiblesRoot
+        , levelConfig = Game.getCurrentLevelConfig();
 
     Game.state.destructibleCount = 0; // Сбрасываем счетчик перед инициализацией уровня
 
     if (!root) {
-        Game.log('[Game] Container "destructibles" was not found');
+        return;
+    }
+
+    if (!levelConfig) {
         return;
     }
 
     root.__eachChild(node => {
-        var body = node.__ph_body;
+        var body = node.__ph_body
+            , nodeName = Game.getDestructibleName(node)
+            , hp;
 
         // Статические объекты и Node без физического тела не являются целями
         if (!body || body.isStatic) {
             return;
         }
 
+        hp = Game.getDestructibleHp(node); // Получаем HP по имени объекта и текущему уровню
+
         node.__needBreaks = 1; // Помечаем объект как основную разрушаемую цель
         Game.state.destructibleCount++;
-        Game.initCollision(body, node, 100);
+
+        Game.initCollision(body, node, hp);
+
     });
 
-    Game.log('[Game] Destructibles initialized:', Game.state.destructibleCount);
 };

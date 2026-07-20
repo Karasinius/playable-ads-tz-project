@@ -4,10 +4,6 @@
  * Удаление одного снежка и его таймера.
  */
 Game.removeProjectile = function (projectile) {
-    if (!projectile) {
-        return;
-    }
-
     removeFromArray(projectile, Game.state.activeProjectiles); // Удаляем снежок из списка активных
 
     if (projectile.__lifetimeTimer) {
@@ -48,7 +44,7 @@ Game.trackProjectile = function (projectile) {
  */
 Game.launchProjectile = function (inputArea) {
     var launchVector = inputArea.__launchVector
-        , pouchOffset = inputArea.__pouchOffset || new Vector2(0, 0);
+        , pouchOffset = inputArea.__pouchOffset;
 
     // Защита от вызова функции без рассчитанного направления запуска
     if (!launchVector) {
@@ -56,18 +52,15 @@ Game.launchProjectile = function (inputArea) {
     }
 
     Game.state.shotsUsed++; // Увеличиваем количество использованных бросков
-    Game.log('[Game] Shots used:', Game.state.shotsUsed);
+    //Game.log('[Game] Shots used:', Game.state.shotsUsed);
 
     var spawnPosition = inputArea.__worldPosition
         , projectile = Game.state.level.__addChildBox({
             __effect: 'tail', // Эффект хвоста
             __img: 'circle1', // Изображение снежка
             __size: [28, 28],
-            __ofs: [
-                spawnPosition.x + pouchOffset.x,
-                spawnPosition.y + pouchOffset.y,
-                -20
-            ], // Создаем снаряд в натянутой точке между двумя резинками
+            // Создаем снаряд в натянутой точке между двумя резинками
+            __ofs: [spawnPosition.x + pouchOffset.x, spawnPosition.y + pouchOffset.y, -20], 
             __physics: {
                 __isStatic: false,
                 __friction: 130,
@@ -78,7 +71,8 @@ Game.launchProjectile = function (inputArea) {
                 __bodyType: 1
             }
         }).update()
-        , velocity = launchVector.__clone().__multiplyScalar(Game.config.projectileSpeedMultiplier); // Преобразуем среднее направление и натяжение в скорость
+        // Преобразуем среднее направление и натяжение в скорость
+        , velocity = launchVector.__clone().__multiplyScalar(Game.config.projectileSpeedMultiplier); 
 
     if (projectile.__ph_body) {
         ph_Body.setVelocity(projectile.__ph_body, velocity);

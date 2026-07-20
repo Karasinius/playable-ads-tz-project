@@ -31,6 +31,7 @@
             "loading.js",
             "gameState.js",
             "gameUtils.js",
+            "localizationManager.js",
             "audioManager.js",
             "collisionSystem.js",
             "destructibles.js",
@@ -38,6 +39,7 @@
             "launcherVisuals.js",
             "levelBindings.js",
             "levelManager.js",
+            "uiManager.js",
             "main.js"
         ],
         "../../eeditor/plugins/": [
@@ -53,6 +55,7 @@
             "en",
             "ru"
         ],
+        "__defaultLang": "en",
         "__defaultTextProperties": {
             "__fontface": "Roboto_Thin"
         },
@@ -94,6 +97,9 @@
         [
             "layout",
             "level_1.json",
+            "level_2.json",
+            "level_3.json",
+            "start.json",
             "win.json"
         ],
         [
@@ -121,8 +127,8 @@
                 "type": "atlas",
                 "description": "create atlas file with all textures for the game",
                 "name": "atlas",
-                "width": 2048,
-                "height": 2048,
+                "width": 2484,
+                "height": 1024,
                 "src": "./img/*.*",
                 "dst": "build_res/",
                 "format": "short",
