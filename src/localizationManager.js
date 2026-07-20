@@ -26,10 +26,10 @@ Game.setLanguage = function (language) {
 /**
  * Экспорт функций смены языка в глобальный window для тестирования через Console.
  */
-set(__window, 'setGameLanguage', language => {
-    Game.setLanguage(language);
-});
+// set(__window, 'setGameLanguage', language => {
+//     Game.setLanguage(language);
+// });
 
-set(__window, 'getGameLanguage', () => {
-    return getUserLanguage();
-});
+// set(__window, 'getGameLanguage', () => {
+//     return getUserLanguage();
+// });

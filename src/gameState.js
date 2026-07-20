@@ -23,12 +23,12 @@ var Game = {
                 // Индивидуальное здоровье разрушаемых объектов первого уровня
                 destructibleHp: {
                     squareBlock1: 50,
-                    circleBlock1: 160,
-                    rectangleBlock1: 100,
-                    rectangleBlock2: 160,
-                    rectangleBlock3: 160,
-                    rectangleBlock4: 160,
-                    rectangleBlock5: 320,
+                    circleBlock1: 140,
+                    rectangleBlock1: 80,
+                    rectangleBlock2: 140,
+                    rectangleBlock3: 140,
+                    rectangleBlock4: 140,
+                    rectangleBlock5: 300,
                 }
             },
             {
@@ -87,7 +87,7 @@ var Game = {
 
         projectileLifetime: 4, // Время жизни снежка в секундах
         projectileSpeedMultiplier: 0.2, // Коэффициент преобразования натяжения в скорость
-        fragmentStep: 50 // Шаг сетки при создании осколков
+        fragmentStep: 75 // Шаг сетки при создании осколков
     },
 
     state: {
