@@ -50,6 +50,8 @@ Game.createLevelAliases = function () {
         // Логика зоны взаимодействия с рогаткой
         userInputArea: {
             __dragDist: 1,
+            __pouchOffset: null,
+            __launchVector: null,
 
             // Натягивание резинок во время drag
             __drag(x, y, dx, dy) {
@@ -92,8 +94,8 @@ Game.createLevelAliases = function () {
                 Game.stopLauncherVisualAnimations();
 
                 // Старые данные броска не должны использоваться в новом drag
-                this.__pouchOffset = 0;
-                this.__launchVector = 0;
+                this.__pouchOffset = null;
+                this.__launchVector = null;
             },
 
             // Запуск снежка после отпускания указателя

@@ -91,15 +91,15 @@ var Game = {
     },
 
     state: {
-        level: 0, // Корневой Node текущего уровня
+        level: null, // Корневой Node текущего уровня
         currentLevelIndex: 0, // Индекс текущего уровня
 
-        leftRubberVisual: 0, // Левая резинка
-        rightRubberVisual: 0, // Правая резинка
-        rubberPouchVisual: 0, // Cтык резинок (мешочек)
-        projectilePreview: 0, // Изображение снежка при натягивании
+        leftRubberVisual: null, // Левая резинка
+        rightRubberVisual: null, // Правая резинка
+        rubberPouchVisual: null, // Cтык резинок (мешочек)
+        projectilePreview: null, // Изображение снежка при натягивании
 
-        destructiblesRoot: 0, // Контейнер основных разрушаемых объектов
+        destructiblesRoot: null, // Контейнер основных разрушаемых объектов
 
         blocks: [], // Все физические объекты с HP
         activeProjectiles: [], // Все активные снежки

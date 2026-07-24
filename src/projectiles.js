@@ -81,6 +81,6 @@ Game.launchProjectile = function (inputArea) {
     Game.trackProjectile(projectile); // Запоминаем снежок и запускаем таймер удаления
 
     // Старые данные не должны использоваться при следующем броске
-    inputArea.__launchVector = 0;
-    inputArea.__pouchOffset = 0;
+    inputArea.__launchVector = null;
+    inputArea.__pouchOffset = null;
 };

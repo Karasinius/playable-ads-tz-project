@@ -72,11 +72,11 @@ Game.unloadLevel = function () {
     Game.state.earnedStars = 0;
     Game.state.levelCompleted = false;
 
-    Game.state.leftRubberVisual = 0;
-    Game.state.rightRubberVisual = 0;
-    Game.state.rubberPouchVisual = 0;
-    Game.state.projectilePreview = 0;
-    Game.state.destructiblesRoot = 0;
+    Game.state.leftRubberVisual = null;
+    Game.state.rightRubberVisual = null;
+    Game.state.rubberPouchVisual = null;
+    Game.state.projectilePreview = null;
+    Game.state.destructiblesRoot = null;
 
     // gameStarted не сбрасывается, поэтому стартовое окно показывается только один раз
     // backgroundMusicStarted также не сбрасывается между уровнями
@@ -85,7 +85,7 @@ Game.unloadLevel = function () {
         Game.state.level.__removeFromParent();
     }
 
-    Game.state.level = 0;
+    Game.state.level = null;
 };
 
 /**
